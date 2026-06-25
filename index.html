@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>hamza asdairi</title>
+<style>
+  :root {
+    --fg: #f2f2f2;
+    --muted: #b8b8b8;
+    --accent: #6ee7b7;
+  }
+
+  * { box-sizing: border-box; }
+
+  @keyframes pageIn { from { opacity: 0; } to { opacity: 1; } }
+  body { animation: pageIn 0.35s ease both; }
+  body.leaving { animation: none; opacity: 0; transition: opacity 0.3s ease; }
+  @media (prefers-reduced-motion: reduce) {
+    body, body.leaving { animation: none; transition: none; opacity: 1; }
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--fg);
+    font-family: "SFMono-Regular", "Menlo", "Consolas", "Liberation Mono",
+      "Courier New", monospace;
+
+    background: #0e0e0e;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px;
+  }
+
+  /* dark veil so text stays readable over any photo */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 0;
+  }
+
+  .content { position: relative; z-index: 1; }
+
+  .avatar {
+    display: block;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    margin: 0 auto 22px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  }
+
+  .name {
+    font-size: clamp(1.4rem, 5vw, 2.2rem);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin: 0 0 28px;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+  }
+
+  nav {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+  }
+
+  nav a {
+    color: var(--fg);
+    text-decoration: none;
+    font-size: 0.95rem;
+    padding: 6px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.25);
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+    backdrop-filter: blur(2px);
+  }
+  nav a:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .keys {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 16px;
+    padding: 12px 16px;
+    font-size: 0.74rem;
+    color: var(--muted);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+  }
+  .keys span { white-space: nowrap; }
+  .keys kbd {
+    color: var(--accent);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 4px;
+    padding: 1px 6px;
+    margin-right: 5px;
+    font-family: inherit;
+  }
+</style>
+</head>
+<body data-keys="w d l">
+  <div class="content">
+    <img class="avatar" src="profile.jpg" alt="hamza asdairi" />
+    <h1 class="name">hamza asdairi</h1>
+    <nav>
+      <a href="who-i-am.html">[ who i am ]</a>
+      <a href="what-im-doing.html">[ what i'm doing ]</a>
+      <a href="things-i-like.html">[ things i like ]</a>
+    </nav>
+  </div>
+
+  <footer class="keys">
+    <span><kbd>w</kbd>who</span>
+    <span><kbd>d</kbd>doing</span>
+    <span><kbd>l</kbd>likes</span>
+  </footer>
+
+  <script src="keys.js"></script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>things i like — hamza asdairi</title>
+<link rel="stylesheet" href="page.css" />
+</head>
+<body data-keys="b">
+  <div class="wrap">
+    <a class="back" href="index.html">‹ back</a>
+    <h1>things i like</h1>
+
+    <!--
+      7 tiles, symmetric grid. To fill one in:
+        - set the link:      href="https://..."  (or leave "#")
+        - set the picture:   put image in img/ then add it as the thumb background:
+                             <div class="thumb" style="background-image: url('img/NAME.jpg')"></div>
+        - set the label text
+      The data-key="N" lets the matching number key (1-7) open that tile.
+    -->
+    <div class="grid">
+      <a class="thing" href="img/diffeq.jpg" data-key="1" data-full="img/diffeq.jpg">
+        <span class="num">[1]</span>
+        <div class="thumb" style="background-image: url('img/diffeq.jpg'), linear-gradient(135deg, #1d1d1d, #2c2c2c)"></div>
+        <div class="label">differential equations</div>
+        <div class="phrase">the language of change</div>
+      </a>
+      <a class="thing" href="img/ozil.jpg" data-key="2" data-full="img/ozil.jpg">
+        <span class="num">[2]</span>
+        <div class="thumb" style="background-image: url('img/ozil.jpg'), linear-gradient(135deg, #1d1d1d, #2c2c2c)"></div>
+        <div class="label">mesut özil</div>
+        <div class="phrase">vision others simply don't have</div>
+      </a>
+      <a class="thing" href="img/machiavelli.jpg" data-key="3" data-full="img/machiavelli.jpg">
+        <span class="num">[3]</span>
+        <div class="thumb" style="background-image: url('img/machiavelli.jpg'), linear-gradient(135deg, #1d1d1d, #2c2c2c)"></div>
+        <div class="label">niccolò machiavelli</div>
+        <div class="phrase">power seen without illusions</div>
+      </a>
+      <a class="thing" href="img/orgo.jpg" data-key="4" data-full="img/orgo.jpg">
+        <span class="num">[4]</span>
+        <div class="thumb" style="background-image: url('img/orgo.jpg'), linear-gradient(135deg, #1d1d1d, #2c2c2c)"></div>
+        <div class="label">organic synthesis</div>
+        <div class="phrase">building molecules from scratch</div>
+      </a>
+      <a class="thing" href="img/chess.jpg" data-key="5" data-full="img/chess.jpg">
+        <span class="num">[5]</span>
+        <div class="thumb" style="background-image: url('img/chess.jpg'), linear-gradient(135deg, #1d1d1d, #2c2c2c)"></div>
+        <div class="label">chess</div>
+        <div class="phrase">a quiet war of ideas</div>
+      </a>
+      <a class="thing" href="img/bohr.jpg" data-key="6" data-full="img/bohr.jpg">
+        <span class="num">[6]</span>
+        <div class="thumb" style="background-image: url('img/bohr.jpg'), linear-gradient(135deg, #1d1d1d, #2c2c2c)"></div>
+        <div class="label">niels bohr</div>
+        <div class="phrase">architect of the atom</div>
+      </a>
+      <a class="thing" href="img/limitless.jpg" data-key="7" data-full="img/limitless.jpg">
+        <span class="num">[7]</span>
+        <div class="thumb" style="background-image: url('img/limitless.jpg'), linear-gradient(135deg, #1d1d1d, #2c2c2c)"></div>
+        <div class="label">limitless</div>
+        <div class="phrase">(dextroamphetamine)</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- full-image overlay; opened by clicking a tile or pressing its number -->
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <div class="lb-inner">
+      <img alt="" />
+      <div class="lb-cap">
+        <span class="lb-title"></span>
+        <span class="lb-phrase"></span>
+      </div>
+    </div>
+  </div>
+
+  <footer class="keys">
+    <span><kbd>1–7</kbd>open</span>
+    <span><kbd>b</kbd>back</span>
+  </footer>
+
+  <script src="keys.js"></script>
+</body>
+</html>

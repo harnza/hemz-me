@@ -1,0 +1,22 @@
+# OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# Logs & temp
+*.log
+*.tmp
+
+# Dependencies (in case tooling is added later)
+node_modules/
+
+# Environment / secrets
+.env
+.env.*
