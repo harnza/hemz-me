@@ -1,10 +1,10 @@
 // Single-key navigation + image lightbox, shared across all pages.
 // h home · w who i am · d what i'm doing · l things i like
-// e email · g github · x twitter · b back · 1-7 open a "things i like" picture
+// e email · g github · i linkedin · b back · 1-7 open a "things i like" picture
 (function () {
   const EMAIL = "hamzaasdairi15@gmail.com";
   const GITHUB = "https://github.com/harnza";
-  const TWITTER = "https://x.com/hemzml";
+  const LINKEDIN = "https://www.linkedin.com/in/hvmza/";
 
   const routes = {
     h: "index.html",
@@ -130,8 +130,8 @@
       window.open(GITHUB, "_blank", "noopener");
       return;
     }
-    if (k === "x" && can("x")) {
-      window.open(TWITTER, "_blank", "noopener");
+    if (k === "i" && can("i")) {
+      window.open(LINKEDIN, "_blank", "noopener");
       return;
     }
     if (k === "b" && can("b")) {
