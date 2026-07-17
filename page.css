@@ -106,6 +106,10 @@ a.link:hover { color: var(--accent); }
   font-weight: 700;
 }
 
+/* resume link under the "what i'm doing" list */
+.resume-line { margin-top: 24px; }
+.resume-line .arrow { color: var(--accent); font-weight: 700; margin-right: 4px; }
+
 /* symmetric "things i like" grid */
 .grid {
   display: flex;
