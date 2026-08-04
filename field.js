@@ -80,7 +80,9 @@
 
     "float noise(vec2 p){",
     "  vec2 i=floor(p),f=fract(p);",
-    "  vec2 u=f*f*(3.0-2.0*f);",
+    // quintic curve: continuous second derivative, so the cell grid stops
+    // showing as faint creases once the field is magnified
+    "  vec2 u=f*f*f*(f*(f*6.0-15.0)+10.0);",
     "  return mix(mix(hash(i),hash(i+vec2(1.0,0.0)),u.x),",
     "             mix(hash(i+vec2(0.0,1.0)),hash(i+vec2(1.0,1.0)),u.x),u.y);",
     "}",
@@ -178,15 +180,41 @@
   var uMouse = gl.getUniformLocation(prog, "u_mouse");
   var uTime = gl.getUniformLocation(prog, "u_time");
 
-  // The field is all soft gradients, so rendering well under 1 device pixel per
-  // screen pixel is free quality-wise and keeps the fan quiet on laptops.
-  var RES = 0.55;
-  var w = 0, h = 0;
+  // Render at real device pixels so the field stays crisp on high-DPI and 4K
+  // screens. `quality` then scales that up or down from measured frame times:
+  // a fast GPU gets the full resolution, a struggling one trades sharpness for
+  // a smooth framerate rather than dropping frames.
+  var DPR_CAP = 2;             // beyond 2x is invisible and very expensive
+  var MIN_Q = 0.5, MAX_Q = 1;
+  // Sanity ceiling only — enough for a native 4K panel at 1:1. Throttling is the
+  // frame-time sampler's job, not this cap's.
+  var PIXEL_BUDGET = 9000000;
+  // Start a notch below full and ramp up once frames prove fast, so a mid-range
+  // GPU on a big display never stutters through its first second.
+  var quality = 0.75;
+
+  var w = 0, h = 0;            // drawing-buffer size, in device pixels
+  var scaleX = 1, scaleY = 1;  // CSS px -> drawing-buffer px
 
   function resize() {
     var cw = window.innerWidth, ch = window.innerHeight;
-    var nw = Math.max(1, Math.floor(cw * RES));
-    var nh = Math.max(1, Math.floor(ch * RES));
+    var dpr = Math.min(window.devicePixelRatio || 1, DPR_CAP);
+    var s = dpr * quality;
+
+    var nw = Math.max(1, Math.round(cw * s));
+    var nh = Math.max(1, Math.round(ch * s));
+
+    var total = nw * nh;
+    if (total > PIXEL_BUDGET) {
+      var f = Math.sqrt(PIXEL_BUDGET / total);
+      nw = Math.max(1, Math.floor(nw * f));
+      nh = Math.max(1, Math.floor(nh * f));
+    }
+
+    // keep the mapping honest even after the budget clamp
+    scaleX = nw / cw;
+    scaleY = nh / ch;
+
     if (nw === w && nh === h) return;
     w = nw; h = nh;
     canvas.width = w;
@@ -196,6 +224,25 @@
   resize();
   window.addEventListener("resize", resize);
   window.addEventListener("orientationchange", resize);
+
+  // ---- adaptive quality -----------------------------------------------------
+  // Averages frame time over a window, then nudges `quality` one step at a time.
+  // The gap between the two thresholds stops it oscillating.
+  var samples = 0, accum = 0;
+  function sampleFrame(dtMs) {
+    accum += dtMs;
+    if (++samples < 45) return;
+    var avg = accum / samples;
+    samples = 0; accum = 0;
+
+    if (avg > 22 && quality > MIN_Q) {          // under ~45fps: back off
+      quality = Math.max(MIN_Q, quality - 0.15);
+      resize();
+    } else if (avg < 13 && quality < MAX_Q) {   // comfortably above 60fps
+      quality = Math.min(MAX_Q, quality + 0.1);
+      resize();
+    }
+  }
 
   var running = true;
   var dead = false;   // context lost for good; the CSS fallback has taken over
@@ -221,8 +268,10 @@
     if (!running) return;
     resize();
 
-    var dt = Math.min((now - last) / 1000, 0.05);
+    var dtMs = now - last;
+    var dt = Math.min(dtMs / 1000, 0.05);
     last = now;
+    if (!reduced) sampleFrame(dtMs);
 
     // with no pointer around, wander on a slow Lissajous path
     if (idle && !reduced) {
@@ -238,7 +287,7 @@
 
     gl.uniform2f(uRes, w, h);
     // flip Y: CSS pixels grow downward, gl_FragCoord grows upward
-    gl.uniform2f(uMouse, eased.x * RES, h - eased.y * RES);
+    gl.uniform2f(uMouse, eased.x * scaleX, h - eased.y * scaleY);
     gl.uniform1f(uTime, reduced ? 0 : (now - t0) / 1000);
 
     gl.drawArrays(gl.TRIANGLES, 0, 3);
