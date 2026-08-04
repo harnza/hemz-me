@@ -55,7 +55,9 @@
     z-index: 0;
   }
 
-  .content { position: relative; z-index: 1; }
+  /* max-width keeps the now-horizontal nav from sizing this to max-content and
+     overflowing the viewport on narrow screens */
+  .content { position: relative; z-index: 1; max-width: 100%; }
 
   .avatar {
     display: block;
@@ -78,9 +80,11 @@
 
   nav {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;      /* stack again if the screen is too narrow for one row */
     gap: 12px;
     align-items: center;
+    justify-content: center;
   }
 
   nav a {
