@@ -1,19 +1,11 @@
+/* The flowing field (field.js) is a dark bluish/purple canvas, so every page is
+   dark now — a light scheme would leave the text unreadable over it. */
 :root {
-  --bg: #0e0e0e;
-  --fg: #e6e6e6;
-  --muted: #888;
+  --bg: #0b0a19;
+  --fg: #e8e6f2;
+  --muted: #9791b0;
   --accent: #6ee7b7;
-  --line: #262626;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --bg: #f7f7f5;
-    --fg: #1a1a1a;
-    --muted: #777;
-    --accent: #0a7a52;
-    --line: #e2e2dd;
-  }
+  --line: rgba(158, 145, 220, 0.22);
 }
 
 * { box-sizing: border-box; }
@@ -27,9 +19,12 @@ body.leaving { animation: none; opacity: 0; transition: opacity 0.3s ease; }
   body, body.leaving { animation: none; transition: none; opacity: 1; }
 }
 
+/* base colour lives on <html> so the field canvas (z-index: -1) shows through body */
+html { background: var(--bg); }
+
 body {
   margin: 0;
-  background: var(--bg);
+  background: transparent;
   color: var(--fg);
   font-family: "SFMono-Regular", "Menlo", "Consolas", "Liberation Mono",
     "Courier New", monospace;
@@ -38,7 +33,23 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* soft veil so body text stays readable over the field without hiding it */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    70vmax 60vmax at 50% 40%,
+    rgba(6, 5, 18, 0.6),
+    rgba(6, 5, 18, 0.32) 70%
+  );
+}
+
 .wrap {
+  position: relative;
+  z-index: 1;
   max-width: 600px;
   margin: 0 auto;
   padding: 6vh 24px 12vh;
@@ -143,8 +154,8 @@ a.link:hover { color: var(--accent); }
   height: 150px;
   border-radius: 12px;
   border: 1px solid var(--line);
-  background: #1a1a1a center / cover no-repeat;
-  background-image: linear-gradient(135deg, #1d1d1d, #2c2c2c);
+  background: #171432 center / cover no-repeat;
+  background-image: linear-gradient(135deg, #1d1a3d, #2a2456);
 }
 .thing .label {
   margin-top: 9px;
@@ -203,7 +214,7 @@ a.link:hover { color: var(--accent); }
   padding: 12px 16px;
   font-size: 0.74rem;
   color: var(--muted);
-  background: linear-gradient(to top, var(--bg) 65%, transparent);
+  background: linear-gradient(to top, rgba(6, 5, 18, 0.82) 55%, transparent);
   z-index: 5;
 }
 .keys span { white-space: nowrap; }

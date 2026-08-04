@@ -14,6 +14,9 @@
 
   * { box-sizing: border-box; }
 
+  /* base colour lives on <html> so the field canvas (z-index: -1) shows through body */
+  html { background: #0b0a19; }
+
   @keyframes pageIn { from { opacity: 0; } to { opacity: 1; } }
   body { animation: pageIn 0.35s ease both; }
   body.leaving { animation: none; opacity: 0; transition: opacity 0.3s ease; }
@@ -28,7 +31,7 @@
     font-family: "SFMono-Regular", "Menlo", "Consolas", "Liberation Mono",
       "Courier New", monospace;
 
-    background: #0e0e0e;
+    background: transparent;
 
     display: flex;
     flex-direction: column;
@@ -38,12 +41,17 @@
     padding: 24px;
   }
 
-  /* dark veil so text stays readable over any photo */
+  /* soft veil so text stays readable over the field without hiding it */
   body::before {
     content: "";
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    background: radial-gradient(
+      60vmax 60vmax at 50% 45%,
+      rgba(6, 5, 18, 0.42),
+      rgba(6, 5, 18, 0.18) 70%
+    );
     z-index: 0;
   }
 
@@ -105,7 +113,7 @@
     padding: 12px 16px;
     font-size: 0.74rem;
     color: var(--muted);
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+    background: linear-gradient(to top, rgba(6, 5, 18, 0.75), transparent);
   }
   .keys span { white-space: nowrap; }
   .keys kbd {
@@ -135,6 +143,7 @@
     <span><kbd>l</kbd>likes</span>
   </footer>
 
+  <script src="field.js"></script>
   <script src="keys.js"></script>
 </body>
 </html>
